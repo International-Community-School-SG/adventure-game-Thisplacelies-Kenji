@@ -76,25 +76,24 @@ public class Commands{
 		return false;
 	}
 
-	/**
-	 * Here begins the actual commands players can use.  Each command should:
-	 *   return a boolean to tell if it has been run properly or not (this may or may not be used in your code)
-	 *   print out any results for the player
-	 *   For the command to actually run, it needs to have been added to the switch statement above
-	 * 
-	 * @param words - everything written in the most recent command
-	 * @param player - the Player object (with access to his current room)
-	 * @param world - the World object (this should not be needed in most cases as the Player has access to current room already)
-	 * 
-	 * @return - Did the command succeed?
-	 */
-	
-	
 	private boolean drop(String[] words, Player player, World world) {
-		// Left for the programmer to implement this
-		
-		return false;
-	}
+    Room current = player.room;
+    
+    Item item = player.getItem(words);   
+    
+    if(item == null) 
+	{
+        System.out.println("What should I drop?");
+        return false;
+    }
+    
+    player.removeItem(item);   // Remove from player's inventory
+    current.addItem(item);     // Add to the current room
+    
+    System.out.println("You dropped the " + item.getName() + ".");
+    
+    return true;
+}
 
     /**
      * Prints out what the player can see
@@ -161,7 +160,7 @@ public class Commands{
 	 * @return the direction found as a char 
 	 */
 	private char getDirection(String[] words) {
-		String[] directions = {"N","NORTH","S","SOUTH"};
+		String[] directions = {"N","NORTH","S","SOUTH","E","EAST","W","WEST"};
 		for (String direction : directions) {
 			if (Arrays.asList(words).contains(direction)) {
 				return direction.charAt(0);
